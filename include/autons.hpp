@@ -14,4 +14,6 @@ void combining_movements();
 void interfered_example();
 
 void default_constants();
-void auto_ring_score();
+
+// the first functon i declared in autons.cpp
+void auto_ring_score(); 
