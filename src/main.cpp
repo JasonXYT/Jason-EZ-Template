@@ -8,8 +8,8 @@
 // Chassis constructor
 ez::Drive chassis(
     // These are your drive motors, the first motor is used for sensing!
-    {1, 2},     // Left Chassis Ports (negative port will reverse it!)
-    {3, 4},  // Right Chassis Ports (negative port will reverse it!)
+    {4, 6},     // Left Chassis Ports (negative port will reverse it!)
+    {2, 3},  // Right Chassis Ports (negative port will reverse it!)
 
     7,      // IMU Port
     4.125,  // 2.75 // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
@@ -49,7 +49,7 @@ void initialize() {
       Auton("Motion Chaining\n\nDrive forward, turn, and come back, but blend everything together :D", motion_chaining),
       Auton("Combine all 3 movements", combining_movements),
       Auton("Interference\n\nAfter driving forward, robot performs differently if interfered or not.", interfered_example),
-      Auton("drive the robot and try to score a ring", auto_ring_score),
+      Auton("The robot moves and tries to score a ring using intake and tilter", auto_ring_score),
   });
 
   // Initialize chassis and auton selector
@@ -159,10 +159,10 @@ void opcontrol() {
       intake.move(0);
     }
 
-    if (master.get_digital(DIGITAL_L1)) {
+    if (master.get_digital(DIGITAL_R1)) {
       tilter.move(127);
     } 
-    else if (master.get_digital(DIGITAL_L2)) {
+    else if (master.get_digital(DIGITAL_R2)) {
       tilter.move(-127);
     } 
     else {
