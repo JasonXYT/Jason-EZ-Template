@@ -9,6 +9,8 @@
 const int DRIVE_SPEED = 110;
 const int TURN_SPEED = 90;
 const int SWING_SPEED = 90;
+const int INTAKE_SPEED = 110;
+const int TILTER_SPEED = 110;
 
 ///
 // Constants
@@ -221,7 +223,80 @@ void interfered_example() {
 // . . .
 // Make your own autonomous functions here!
 // . . .
-void auto_ring_score() {
+
+void intake_control(int speed = 100) {
+  intake.move_velocity(100); // Move the intake motor at the desired speed
+}
+
+void stop_intake() {
+  intake.move_velocity(0); // Stops the intake motor
+}
+
+void tilter_control(int speed = 100) {
+  tilter.move_velocity(100); // Move the intake motor at the desired speed
+}
+
+void stop_tilter() {
+  tilter.move_velocity(0); // Stops the intake motor
+}
+
+// you must define the function in autons.hpp
+void auto_ring_score() { //this is the first function i made
   chassis.pid_drive_set(24_in, DRIVE_SPEED, true);
   chassis.pid_wait();
+
+  chassis.pid_turn_set(90_deg, TURN_SPEED);
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(90_deg, TURN_SPEED);
+  chassis.pid_wait();
+
+  tilter_control(TILTER_SPEED);  // Start intake motor
+  pros::delay(2000);             // Keep intake motor running for 2 seconds (adjust as needed)
+  stop_tilter();
+
+  chassis.pid_turn_set(-90_deg, TURN_SPEED);
+  chassis.pid_wait();
+
+  chassis.pid_drive_set(24_in, DRIVE_SPEED, true);
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(-45_deg, TURN_SPEED);
+  chassis.pid_wait();
+
+  intake_control(INTAKE_SPEED);  // Start intake motor
+  pros::delay(2000);             // Keep intake motor running for 2 seconds (adjust as needed)
+  stop_intake();
+  
+  chassis.pid_drive_set(6_in, DRIVE_SPEED, true);
+  chassis.pid_wait();
+
+  chassis.pid_drive_set(-6_in, DRIVE_SPEED, true);
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(-45_deg, TURN_SPEED);
+  chassis.pid_wait();
+
+  intake_control(INTAKE_SPEED);  // Start intake motor
+  pros::delay(2000);             // Keep intake motor running for 2 seconds (adjust as needed)
+  stop_intake();
+  
+  chassis.pid_drive_set(6_in, DRIVE_SPEED, true);
+  chassis.pid_wait();
+
+  chassis.pid_drive_set(-6_in, DRIVE_SPEED, true);
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(-90_deg, TURN_SPEED);
+  chassis.pid_wait();
+  
+  chassis.pid_drive_set(6_in, DRIVE_SPEED, true);
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(-45_deg, TURN_SPEED);
+  chassis.pid_wait();
+
+  chassis.pid_drive_set(6_in, DRIVE_SPEED, true);
+  chassis.pid_wait();
 }
+// you also need to remember to put it into main.cpp
